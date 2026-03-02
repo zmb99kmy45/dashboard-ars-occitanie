@@ -7,7 +7,7 @@ import folium
 
 st.set_page_config(page_title="Dashboard Signaux ARS Occitanie", layout="wide")
 
-st.title("Dashboard interactif – Signaux qualité & sécurité (Occitanie)")
+st.title("Dashboard interactif – Qualité & sécurité (Occitanie)")
 
 # --- Load data ---
 @st.cache_data
@@ -48,7 +48,6 @@ col4.metric("Part EIG (%)", f"{df['part_eig'].mean():.1f}")
 st.markdown("---")
 
 # --- Interprétation des KPI (automatique) ---
-st.markdown("##Lecture & interprétation des KPI")
 
 total_signaux = int(df["nb_signaux"].sum())
 taux_reg = (df["nb_signaux"].sum() / df["population"].sum() * 100000)
@@ -69,7 +68,7 @@ st.write(
 """
 )
 
-st.markdown("###Points d’attention (Top 3)")
+st.markdown("Top 3")
 c1, c2, c3 = st.columns(3)
 
 with c1:
@@ -84,7 +83,7 @@ with c3:
     st.caption("Départements – **hausse trimestrielle** la plus forte (%)")
     st.dataframe(top_evo, use_container_width=True)
 
-st.markdown("### À retenir / pistes d’action (exemple)")
+st.markdown("### À retenir ")
 st.info("""
 • Prioriser l’analyse des territoires présentant un taux élevé et/ou une hausse trimestrielle marquée.  
 • Croiser ces résultats avec les thématiques/motifs pour cibler des plans de contrôle.  
@@ -92,7 +91,7 @@ st.info("""
 """)
 
 # --- Carte interactive (Folium) ---
-st.markdown("###Carte interactive")
+st.markdown("### Carte interactive")
 
 # Load geojson
 geo_url = "https://etalab-datasets.geo.data.gouv.fr/contours-administratifs/latest/geojson/departements-1000m.geojson"
@@ -136,7 +135,7 @@ st_folium(m, width=800)
 st.markdown("---")
 
 # --- Classements ---
-st.markdown("##Classements départements")
+st.markdown("Classements par départements")
 
 st.subheader("Top par score de risque")
 st.dataframe(df.sort_values("score_risque", ascending=False).head(top_n))
@@ -150,8 +149,6 @@ st.dataframe(df.sort_values("evolution_pct", ascending=False).head(top_n))
 st.markdown("---")
 
 # --- Graphiques ---
-st.markdown("##Graphiques dynamiques")
-
 fig1 = px.bar(
     df.sort_values(metric, ascending=False).head(top_n),
     x="dep",
